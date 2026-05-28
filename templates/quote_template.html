@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Customer Quote</title>
+  <style>
+    :root {
+      --brand-navy: #10253f;
+      --brand-blue: #00a6e8;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --border: #d1d5db;
+      --soft: #f3f4f6;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      color: var(--text);
+      margin: 24px;
+      font-size: 12px;
+    }
+
+    .page {
+      width: 100%;
+      max-width: 980px;
+      margin: 0 auto;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 24px;
+      border-bottom: 2px solid var(--brand-navy);
+      padding-bottom: 14px;
+      margin-bottom: 18px;
+    }
+
+    .logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      min-width: 320px;
+    }
+
+    .logo-wrap img {
+      max-height: 72px;
+      max-width: 260px;
+      object-fit: contain;
+      display: block;
+    }
+
+    .company-block {
+      text-align: right;
+      line-height: 1.45;
+    }
+
+    .company-name {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--brand-navy);
+      margin-bottom: 6px;
+    }
+
+    .heading-row {
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .card {
+      border: 1px solid var(--border);
+      padding: 14px;
+      border-radius: 6px;
+      background: #fff;
+    }
+
+    .card h3 {
+      margin: 0 0 10px 0;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--brand-navy);
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: 130px 1fr;
+      gap: 8px 10px;
+    }
+
+    .label {
+      font-weight: 700;
+      color: var(--brand-navy);
+    }
+
+    .value {
+      color: var(--text);
+    }
+
+    .quote-banner {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin: 0 0 14px 0;
+    }
+
+    .quote-title {
+      font-size: 28px;
+      font-weight: 700;
+      color: var(--brand-navy);
+      margin: 0;
+    }
+
+    .markup {
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+    }
+
+    thead th {
+      background: var(--brand-navy);
+      color: #fff;
+      text-align: left;
+      font-size: 12px;
+      padding: 10px 8px;
+      border: 1px solid var(--brand-navy);
+    }
+
+    tbody td {
+      padding: 10px 8px;
+      border: 1px solid var(--border);
+      vertical-align: top;
+    }
+
+    tbody tr:nth-child(even) {
+      background: #fafafa;
+    }
+
+    .num {
+      text-align: right;
+      white-space: nowrap;
+    }
+
+    .center {
+      text-align: center;
+    }
+
+    .desc {
+      line-height: 1.4;
+    }
+
+    .notes {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .totals {
+      margin-top: 14px;
+      margin-left: auto;
+      width: 280px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .totals-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .totals-row:last-child {
+      border-bottom: none;
+    }
+
+    .totals-row.grand {
+      background: var(--soft);
+      font-weight: 700;
+      color: var(--brand-navy);
+      font-size: 14px;
+    }
+
+    .terms {
+      margin-top: 20px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 14px;
+      background: #fff;
+    }
+
+    .terms h3 {
+      margin: 0 0 10px 0;
+      color: var(--brand-navy);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .terms ul {
+      margin: 0;
+      padding-left: 18px;
+      line-height: 1.45;
+    }
+
+    .footer {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 11px;
+      text-align: center;
+    }
+
+    @media print {
+      body {
+        margin: 0;
+      }
+      .page {
+        max-width: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="topbar">
+      <div class="logo-wrap">
+        {% if logo_data_uri %}
+          <img src="{{ logo_data_uri }}" alt="Company logo" />
+        {% endif %}
+      </div>
+
+      <div class="company-block">
+        <div class="company-name">{{ company.name }}</div>
+        <div>{{ company.address_1 }}</div>
+        <div>{{ company.address_2 }}</div>
+        {% if company.phone %}<div>{{ company.phone }}</div>{% endif %}
+        {% if company.email %}<div>{{ company.email }}</div>{% endif %}
+      </div>
+    </div>
+
+    <div class="quote-banner">
+      <h1 class="quote-title">Customer Quote</h1>
+      <div class="markup">Markup Applied: {{ fmt_pct(quote_meta.markup_pct) }}</div>
+    </div>
+
+    <div class="heading-row">
+      <div class="card">
+        <h3>Quote Details</h3>
+        <div class="meta-grid">
+          <div class="label">Date</div>
+          <div class="value">{{ quote_meta.date }}</div>
+
+          <div class="label">Project</div>
+          <div class="value">{{ quote_meta.project }}</div>
+
+          <div class="label">Quote</div>
+          <div class="value">{{ quote_meta.quote_subject }}</div>
+
+          <div class="label">Ship To</div>
+          <div class="value">{{ quote_meta.ship_to }}</div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Prepared By</h3>
+        <div class="meta-grid">
+          <div class="label">Contact</div>
+          <div class="value">{{ company.prepared_by_name }}</div>
+
+          <div class="label">Phone</div>
+          <div class="value">{{ company.prepared_by_phone }}</div>
+
+          <div class="label">Email</div>
+          <div class="value">{{ company.prepared_by_email }}</div>
+
+          <div class="label">Bid Date</div>
+          <div class="value">{{ quote_meta.bid_date }}</div>
+
+          <div class="label">Quote Expires</div>
+          <div class="value">{{ quote_meta.quote_expires }}</div>
+        </div>
+      </div>
+    </div>
+
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 6%;">Line</th>
+          <th style="width: 18%;">Item</th>
+          <th>Description</th>
+          <th style="width: 7%;">Unit</th>
+          <th style="width: 7%;">Qty</th>
+          <th style="width: 12%;">Unit Price</th>
+          <th style="width: 13%;">Line Total</th>
+          <th style="width: 12%;">Lead Time</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in line_items %}
+        <tr>
+          <td class="center">{{ item.line_no }}</td>
+          <td>{{ item.display_item }}</td>
+          <td class="desc">
+            {{ item.display_description }}
+            {% if item.notes %}
+              <div class="notes">
+                {% for note in item.notes %}
+                  • {{ note }}{% if not loop.last %}<br>{% endif %}
+                {% endfor %}
+              </div>
+            {% endif %}
+          </td>
+          <td class="center">{{ item.unit }}</td>
+          <td class="center">{{ item.qty }}</td>
+          <td class="num">{{ fmt_currency(item.customer_unit_price) }}</td>
+          <td class="num">{{ fmt_currency(item.customer_line_total) }}</td>
+          <td>{{ item.lead_time }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <div class="totals">
+      <div class="totals-row grand">
+        <span>Subtotal</span>
+        <span>{{ subtotal }}</span>
+      </div>
+    </div>
+
+    <div class="terms">
+      <h3>Terms and Conditions</h3>
+      <ul>
+        {% for term in terms %}
+          <li>{{ term }}</li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="footer">
+      Thank you for the opportunity to provide this quote.
+    </div>
+  </div>
+</body>
+</html>
