@@ -3,6 +3,7 @@
 ## Technical Details:
 - This is an Azure Function App written in Python.
     - Python Package Manager: UV
+    - Azure Functions Python v2 
 - It is designed to convert supplier quote data into a format suitable for Patriot MRO Solutions.
 - The function is triggered by an HTTP request, which contains the supplier quote data in JSON format
 - The function processes the data and returns the transformed quote in JSON format.
@@ -30,3 +31,10 @@ If you want to change markup for a specific quote:
     "markup_pct": 0.18
 }
 ```
+
+ToDo:
+- Add example local.settings.json with instructions to replace values.
+
+$response = Invoke-WebRequest -Uri "http://localhost:7071/api/generate_quote" -Method Post -Headers $headers -Body $body -ContentType "application/json" -SkipHttpErrorCheck
+$response.StatusCode
+$response.Content
